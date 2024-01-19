@@ -1,0 +1,26 @@
+<h1>顧客情報</h1>
+
+<p>現在のランク状態:
+    <% if @current_rank == 1 %>
+        ブロンズ
+    <% elsif @current_rank == 2 %>
+        シルバー
+    <% else %>
+        Gold
+    <% end %>
+</p>
+<p>ランク計算の開始日: <%= @start_date %></p>
+<p>今まで使用された金額: <%= @amount_this_term %></p>
+<p>次のランクまで必要な金額: <%= @amount_to_next_rank %></p>
+<p>来年のランク: 
+    <% if @next_year_rank == 1 %>
+        ブロンズ
+    <% elsif @next_year_rank == 2 %>
+        シルバー
+    <% else %>
+        Gold
+    <% end %>
+</p>
+<p>ランク調整の日付: <%= @downgrade_date %></p>
+<p>ダウングレード回避必要な金額: <%= @downgrate_rank %></p>
+
