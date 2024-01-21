@@ -1,5 +1,6 @@
 <h1>顧客情報</h1>
 
+<h2>基本情報</h2>
 <p>現在のランク状態:
     <% if @current_rank == 1 %>
         ブロンズ
@@ -12,7 +13,7 @@
 <p>ランク計算の開始日: <%= @start_date %></p>
 <p>今まで使用された金額: <%= @amount_this_term %></p>
 <p>次のランクまで必要な金額: <%= @amount_to_next_rank %></p>
-<p>来年のランク: 
+<p>来年のランク状態:
     <% if @next_year_rank == 1 %>
         ブロンズ
     <% elsif @next_year_rank == 2 %>
@@ -24,3 +25,19 @@
 <p>ランク調整の日付: <%= @downgrade_date %></p>
 <p>ダウングレード回避必要な金額: <%= @downgrate_rank %></p>
 
+<h2>次のランクまでの進捗</h2>
+
+<% @progress = (@amount_this_term.to_f / (@amount_to_next_rank) * 100).to_i %>
+
+<div style="width: 400px; border: 2px solid black;">
+    <div class="progress" style="height: 30px;">
+        <div class="progress-bar" 
+            role="progressbar"
+            style="height: 30px; width: <%= @progress %>%; background-color: #90EE90;" 
+            aria-valuenow="<%= @progress %>"
+            aria-valuemin="0"
+            aria-valuemax="100">
+            <%= @progress %>%
+        </div>
+    </div>
+</div>
