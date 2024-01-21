@@ -1,3 +1,4 @@
 class Order < ApplicationRecord
-  belongs_to :customer
+  self.primary_key = 'order_id'
+  belongs_to :customer, foreign_key: 'external_customer_id'
 end
