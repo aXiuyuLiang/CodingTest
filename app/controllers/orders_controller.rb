@@ -1,5 +1,7 @@
 class OrdersController < ApplicationController
     PAGE_SIZE = 5
+    MIN_SILVER_AMOUNT = 100
+    MIN_GOLD_AMOUNT = 500
 
     def customer_orders
         customer_id = params[:id]
@@ -12,5 +14,44 @@ class OrdersController < ApplicationController
         @page_size = PAGE_SIZE
 
         render 'orders/index'
+    end
+
+    def create
+        customer_id = params[:customerId]
+        customer_name = params[:customerName]
+        order_id = params[:orderId]
+        total_in_cents = params[:totalInCents]
+        date = params[:date]
+
+        ActiveRecord::Base.transaction do
+            customer = Customer.find_or_initialize_by(customer_id: customer_id)
+            if customer.new_record?
+                customer.name = customer_name
+                customer.amount_this_term = total_in_cents / 100.0
+                customer.rank_start_date = Date.new(Date.today.year - 1, 1, 1)
+            else
+                customer.amount_this_term += total_in_cents / 100.0
+            end
+            customer.current_rank = calculate_current_rank(customer.amount_this_term)
+            customer.save!
+
+            order = Order.new(order_id: order_id, external_customer_id: customer.customer_id, total: total_in_cents / 100.0, ordered_at: date)
+            order.save!
+        end
+        rescue ActiveRecord::RecordInvalid => e
+    end
+
+    private
+
+    def calculate_current_rank(total_amount)
+        if total_amount < MIN_SILVER_AMOUNT
+            current_rank = 1
+        elsif MIN_SILVER_AMOUNT <= total_amount && total_amount < MIN_GOLD_AMOUNT
+            current_rank = 2
+        else 
+            current_rank = 3
+        end
+
+        return current_rank
     end
 end

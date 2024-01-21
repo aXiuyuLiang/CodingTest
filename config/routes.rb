@@ -5,4 +5,5 @@ Rails.application.routes.draw do
   # root "articles#index"
   get 'customers/:id/rank_info', to: 'customers#rank_info'
   get 'orders/customer_orders/:id', to: 'orders#customer_orders'
+  post '/orders', to: 'orders#create'
 end
