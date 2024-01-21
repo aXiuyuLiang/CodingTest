@@ -23,11 +23,11 @@
     <% end %>
 </p>
 <p>ランク調整の日付: <%= @downgrade_date %></p>
-<p>ダウングレード回避必要な金額: <%= @downgrate_rank %></p>
+<p>ダウングレード回避必要な金額: <%= @downgrade_rank %></p>
 
 <h2>次のランクまでの進捗</h2>
 
-<% @progress = (@amount_this_term.to_f / (@amount_to_next_rank) * 100).to_i %>
+<% @progress = (@amount_this_term.to_f / (@amount_this_term + @amount_to_next_rank) * 100).to_i %>
 
 <div style="width: 400px; border: 2px solid black;">
     <div class="progress" style="height: 30px;">

@@ -11,7 +11,7 @@ class CustomersController < ApplicationController
         @amount_to_next_rank = calculate_amount_to_next_rank
         @next_year_rank = calculate_next_year_rank
         @downgrade_date = Date.new(Date.today.year, 12, 31)
-        @downgrate_rank = calculate_downgrate_rank
+        @downgrade_rank = calculate_downgrade_rank
         
         render 'rank_info'
     end
@@ -43,16 +43,17 @@ class CustomersController < ApplicationController
         return amount_to_next_rank
     end
 
-    def calculate_downgrate_rank
+    def calculate_downgrade_rank
         case @current_rank
         when 1
-            downgrate_rank = 0
+            downgrade_rank = 0
         when 2
-            downgrate_rank = MIN_SILVER_AMOUNT - @amount_this_term >= 0 ? MIN_SILVER_AMOUNT - @amount_this_term : 0
+            downgrade_rank = MIN_SILVER_AMOUNT - @amount_this_term >= 0 ? MIN_SILVER_AMOUNT - @amount_this_term : 0
         else
-            downgrate_rank = MIN_GOLD_AMOUNT - @amount_this_term > 0 ? MIN_GOLD_AMOUNT - @amount_this_term : 0
+            downgrade_rank = MIN_GOLD_AMOUNT - @amount_this_term > 0 ? MIN_GOLD_AMOUNT - @amount_this_term : 0
         end
 
-        return downgrate_rank
+        return downgrade_rank
     end
 end
+
