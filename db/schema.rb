@@ -10,23 +10,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_01_18_200523) do
-  create_table "customers", force: :cascade do |t|
+ActiveRecord::Schema[7.0].define(version: 2024_01_21_213029) do
+  create_table "customers", primary_key: "customer_id", id: :string, force: :cascade do |t|
     t.string "name"
     t.integer "current_rank"
     t.datetime "rank_start_date"
     t.decimal "amount_this_term"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["customer_id"], name: "index_customers_on_customer_id"
   end
 
-  create_table "orders", force: :cascade do |t|
-    t.integer "customer_id", null: false
+  create_table "orders", primary_key: "order_id", id: :string, force: :cascade do |t|
     t.decimal "total"
     t.datetime "ordered_at"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["customer_id"], name: "index_orders_on_customer_id"
+    t.string "external_customer_id"
   end
 
   create_table "questions", force: :cascade do |t|
@@ -37,5 +35,5 @@ ActiveRecord::Schema[7.0].define(version: 2024_01_18_200523) do
     t.datetime "updated_at", null: false
   end
 
-  add_foreign_key "orders", "customers"
+  add_foreign_key "orders", "customers", column: "external_customer_id", primary_key: "customer_id"
 end
