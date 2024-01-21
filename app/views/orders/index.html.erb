@@ -1,0 +1,7 @@
+<ul>
+  <% @orders.each do |order| %>
+    <li>
+      <span>注文履歴ID: <%= order.id %></span>, <span>注文日付: <%= order.ordered_at %></span>
+    </li>
+  <% end %>
+</ul>
