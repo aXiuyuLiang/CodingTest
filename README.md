@@ -1,24 +1,8 @@
 # README
+- ローカルで定時rakeタスクの実行
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+`rake update_customers:update`
 
-Things you may want to cover:
+- crontabの設定
 
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+`59 23 31 12 * /bin/bash -l -c 'cd /path/to/your/rails/app && rake update_customers:update RAILS_ENV=production'`
