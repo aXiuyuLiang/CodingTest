@@ -54,13 +54,13 @@ order.save
 http://127.0.0.1:3000/customers/100/rank_info
 
 
-![customer_info](Loyalty_tiers/customer_info.png)
+![customer_info](https://github.com/aXiuyuLiang/CodingTest/blob/master/customer_info.png)
 
 
 注文情報のurl:
 http://127.0.0.1:3000/orders/customer_orders/100
 
-![orders_list](Loyalty_tiers/orders_list.png)
+![orders_list](https://github.com/aXiuyuLiang/CodingTest/blob/master/orders_list.png)
 
 
 
