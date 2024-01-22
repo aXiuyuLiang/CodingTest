@@ -1,9 +1,11 @@
 namespace :update_customers do
   desc "Update customers' info"
+  MIN_SILVER_AMOUNT = 100
+  MIN_GOLD_AMOUNT = 500
   task update: :environment do
     Customer.find_each do |customer|
       start_of_this_year = Date.new(Date.today.year, 1, 1)
-      total_amount = Order.where('customer_id = ? AND ordered_at >= ?', customer.id, start_of_this_year).sum(:total)
+      total_amount = Order.where('customer_id = ? AND ordered_at >= ?', customer.id, customer.rank_start_date).sum(:total)
 
       current_rank = case total_amount
         when 0...MIN_SILVER_AMOUNT
