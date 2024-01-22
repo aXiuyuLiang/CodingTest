@@ -17,11 +17,11 @@ class OrdersController < ApplicationController
     end
 
     def create
-        customer_id = params[:customerId]
-        customer_name = params[:customerName]
-        order_id = params[:orderId]
-        total_in_cents = params[:totalInCents]
-        date = params[:date]
+        customer_id = order_params[:customerId]
+        customer_name = order_params[:customerName]
+        order_id = order_params[:orderId]
+        total_in_cents = order_params[:totalInCents]
+        date = order_params[:date]
 
         ActiveRecord::Base.transaction do
             customer = Customer.find_or_initialize_by(customer_id: customer_id)
@@ -42,6 +42,10 @@ class OrdersController < ApplicationController
     end
 
     private
+
+    def order_params
+        params.permit(:customerId, :customerName, :orderId, :totalInCents, :date)
+    end
 
     def calculate_current_rank(total_amount)
         case total_amount

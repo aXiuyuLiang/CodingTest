@@ -3,17 +3,22 @@ class CustomersController < ApplicationController
     MIN_GOLD_AMOUNT = 500
 
     def rank_info
-        @customer = Customer.find(params[:id])
-
-        @current_rank = @customer.current_rank
-        @start_date = @customer.rank_start_date
-        @amount_this_term = @customer.amount_this_term
-        @amount_to_next_rank = calculate_amount_to_next_rank
-        @next_year_rank = calculate_next_year_rank
-        @downgrade_date = Date.new(Date.today.year, 12, 31)
-        @downgrade_rank = calculate_downgrade_rank
+        @customer = Customer.find_by(customer_id: params[:id])
         
-        render 'rank_info'
+        if @customer.nil?
+            render json: { error: "Customer not found" }, status: :not_found
+            return
+        else
+            @current_rank = @customer.current_rank
+            @start_date = @customer.rank_start_date
+            @amount_this_term = @customer.amount_this_term
+            @amount_to_next_rank = calculate_amount_to_next_rank
+            @next_year_rank = calculate_next_year_rank
+            @downgrade_date = Date.new(Date.today.year, 12, 31)
+            @downgrade_rank = calculate_downgrade_rank
+            
+            render 'rank_info'
+        end
     end
 
     private
