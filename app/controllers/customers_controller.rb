@@ -19,41 +19,36 @@ class CustomersController < ApplicationController
     private
 
     def calculate_next_year_rank
-        if @amount_this_term < MIN_SILVER_AMOUNT
-            next_year_rank = 1
-        elsif MIN_SILVER_AMOUNT <= @amount_this_term && @amount_this_term < MIN_GOLD_AMOUNT
-            next_year_rank = 2
-        else 
-            next_year_rank = 3
+        case @amount_this_term
+        when 0...MIN_SILVER_AMOUNT
+            1
+        when MIN_SILVER_AMOUNT...MIN_GOLD_AMOUNT
+            2
+        else
+            3
         end
-
-        return next_year_rank
     end
 
     def calculate_amount_to_next_rank
         case @current_rank
         when 1
-            amount_to_next_rank = MIN_SILVER_AMOUNT - @amount_this_term > 0 ? MIN_SILVER_AMOUNT - @amount_this_term : 0
+            MIN_SILVER_AMOUNT - @amount_this_term
         when 2
-            amount_to_next_rank = MIN_GOLD_AMOUNT - @amount_this_term > 0 ? MIN_GOLD_AMOUNT - @amount_this_term : 0
+            MIN_GOLD_AMOUNT - @amount_this_term
         else
-            amount_to_next_rank = 0
-        end
-
-        return amount_to_next_rank
+            0
+        end.clamp(0, Float::INFINITY)
     end
 
     def calculate_downgrade_rank
         case @current_rank
         when 1
-            downgrade_rank = 0
+            0
         when 2
-            downgrade_rank = MIN_SILVER_AMOUNT - @amount_this_term >= 0 ? MIN_SILVER_AMOUNT - @amount_this_term : 0
+            MIN_SILVER_AMOUNT - @amount_this_term
         else
-            downgrade_rank = MIN_GOLD_AMOUNT - @amount_this_term > 0 ? MIN_GOLD_AMOUNT - @amount_this_term : 0
-        end
-
-        return downgrade_rank
+            MIN_GOLD_AMOUNT - @amount_this_term
+        end.clamp(0, Float::INFINITY)
     end
 end
 

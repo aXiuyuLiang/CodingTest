@@ -44,14 +44,13 @@ class OrdersController < ApplicationController
     private
 
     def calculate_current_rank(total_amount)
-        if total_amount < MIN_SILVER_AMOUNT
-            current_rank = 1
-        elsif MIN_SILVER_AMOUNT <= total_amount && total_amount < MIN_GOLD_AMOUNT
-            current_rank = 2
-        else 
-            current_rank = 3
+        case total_amount
+        when 0...MIN_SILVER_AMOUNT
+            1
+        when MIN_SILVER_AMOUNT...MIN_GOLD_AMOUNT
+            2
+        else
+            3
         end
-
-        return current_rank
     end
 end

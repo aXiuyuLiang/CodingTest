@@ -6,10 +6,13 @@ namespace :update_customers do
       total_amount = Order.where('customer_id = ? AND ordered_at >= ?', customer.id, start_of_this_year).sum(:total)
 
       current_rank = case total_amount
-        when 0...100 then 1
-        when 100...500 then 2
-        else 3
-      end
+        when 0...MIN_SILVER_AMOUNT
+            1
+        when MIN_SILVER_AMOUNT...MIN_GOLD_AMOUNT
+            2
+        else
+            3
+        end
 
       customer.update(
         current_rank: current_rank,
