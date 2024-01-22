@@ -51,16 +51,18 @@ order.save
 ```
 
 顧客情報のurl:
+
 http://127.0.0.1:3000/customers/100/rank_info
 
-
-![customer_info](https://github.com/aXiuyuLiang/CodingTest/blob/master/customer_info.png)
-
+確認画像：
+https://github.com/aXiuyuLiang/CodingTest/blob/master/customer_info.png
 
 注文情報のurl:
+
 http://127.0.0.1:3000/orders/customer_orders/100
 
-![orders_list](https://github.com/aXiuyuLiang/CodingTest/blob/master/orders_list.png)
+確認画像：
+https://github.com/aXiuyuLiang/CodingTest/blob/master/orders_list.png)
 
 
 
