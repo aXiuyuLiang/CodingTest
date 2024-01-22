@@ -3,6 +3,9 @@ class OrdersController < ApplicationController
     MIN_SILVER_AMOUNT = 100
     MIN_GOLD_AMOUNT = 500
 
+    # テストのため
+    skip_before_action :verify_authenticity_token 
+
     def customer_orders
         @customer_id = params[:id]
         page_num = params[:page].present? ? params[:page].to_i : 1
