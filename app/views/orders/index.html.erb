@@ -10,10 +10,10 @@
 
 
 <% if @page_num > 1 %>
-  <%= link_to "Prev", "/orders/customer_orders/1?page=#{@page_num-1}" %>
+  <%= link_to "Prev", "/orders/customer_orders/#{@customer_id}?page=#{@page_num-1}" %>
 <% end %>
 <% if @orders.size == @page_size %>
-  <%= link_to "Next", "/orders/customer_orders/1?page=#{@page_num+1}"  %>
+  <%= link_to "Next", "/orders/customer_orders/#{@customer_id}?page=#{@page_num+1}"  %>
 <% end %>
 
 <p>Page <%= @page_num %></p>

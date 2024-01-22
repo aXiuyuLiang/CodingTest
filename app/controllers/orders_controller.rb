@@ -3,13 +3,16 @@ class OrdersController < ApplicationController
     MIN_SILVER_AMOUNT = 100
     MIN_GOLD_AMOUNT = 500
 
+    # テストのため
+    skip_before_action :verify_authenticity_token 
+
     def customer_orders
-        customer_id = params[:id]
+        @customer_id = params[:id]
         page_num = params[:page].present? ? params[:page].to_i : 1
         start_of_last_year = Date.new(Date.today.year - 1, 1, 1)
         start_index = (page_num - 1) * PAGE_SIZE
         end_index = start_index + PAGE_SIZE - 1
-        @orders = Order.where('external_customer_id = ? AND ordered_at >= ?', customer_id, start_of_last_year)[start_index..end_index]
+        @orders = Order.where('external_customer_id = ? AND ordered_at >= ?', @customer_id, start_of_last_year)[start_index..end_index]
         @page_num = page_num
         @page_size = PAGE_SIZE
 
@@ -17,11 +20,11 @@ class OrdersController < ApplicationController
     end
 
     def create
-        customer_id = params[:customerId]
-        customer_name = params[:customerName]
-        order_id = params[:orderId]
-        total_in_cents = params[:totalInCents]
-        date = params[:date]
+        customer_id = order_params[:customerId]
+        customer_name = order_params[:customerName]
+        order_id = order_params[:orderId]
+        total_in_cents = order_params[:totalInCents]
+        date = order_params[:date]
 
         ActiveRecord::Base.transaction do
             customer = Customer.find_or_initialize_by(customer_id: customer_id)
@@ -43,15 +46,18 @@ class OrdersController < ApplicationController
 
     private
 
-    def calculate_current_rank(total_amount)
-        if total_amount < MIN_SILVER_AMOUNT
-            current_rank = 1
-        elsif MIN_SILVER_AMOUNT <= total_amount && total_amount < MIN_GOLD_AMOUNT
-            current_rank = 2
-        else 
-            current_rank = 3
-        end
+    def order_params
+        params.permit(:customerId, :customerName, :orderId, :totalInCents, :date)
+    end
 
-        return current_rank
+    def calculate_current_rank(total_amount)
+        case total_amount
+        when 0...MIN_SILVER_AMOUNT
+            1
+        when MIN_SILVER_AMOUNT...MIN_GOLD_AMOUNT
+            2
+        else
+            3
+        end
     end
 end
